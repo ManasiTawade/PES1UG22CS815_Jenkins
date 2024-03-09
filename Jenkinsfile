@@ -5,7 +5,7 @@ pipeline {
             steps {
                 
                     build 'PES1UG22CS815-1'
-                    sh "g++ -o output hello.cpp"
+                    sh "g++ -o output test.cpp"
                     echo 'pipeline build successful'
                 
             }
