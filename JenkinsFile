@@ -1,5 +1,4 @@
 pipeline {
-Open with Google Docs
 agent {
 docker {
 image 'node:14'
