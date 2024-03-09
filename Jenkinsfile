@@ -1,36 +1,48 @@
 pipeline {
-agent {
-docker {
-image 'node:14'
-}
-}
-stages {
-stage('Clone repository') {
-steps {
-git branch: 'main',
-}
-url: 'https://github.com/<user>/https://github.com/ManasiTawade/PES1UG22CS815_Jenkins.git'
-}
-stage('Install dependencies') {
-steps {
-sh 'npm install'
-}
-}
-stage('Build application') {
-steps {
-sh 'npm run build'
-}
-}
-stage('Test application') {
-steps {
-sh 'npm test'
-}
-}
-stage('Push Docker image') {
-steps {
-sh 'docker build -t <user>/<image>:$BUILD_NUMBER.'
-}
-}
-sh 'docker push <user>/<image>:$BUILD_NUMBER'
-}
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                
+                    build 'PES1UG21CS191-1'
+                    sh "g++ -o output test.cpp"
+                    echo 'pipeline build successful'
+                
+            }
+            post {
+                failure {
+                    echo 'pipeline build failed'
+                }
+            }
+        }       
+        stage('Test') {
+            steps {
+                // Print output of the .cpp file
+                
+                    sh "./output"
+                    echo 'pipeline test successful'
+                
+            }
+            post {
+                failure {
+                    echo 'pipeline test failed'
+                }
+            }
+        } 
+        stage('Deploy') {
+            steps {
+                echo 'pipeline deployment successful'
+            }
+            post {
+                failure {
+                    echo 'pipeline deployment failed'
+                }
+            }
+        }
+    }
+    post{
+        failure{
+            error 'Pipeline failed'
+        }
+    }
 }
